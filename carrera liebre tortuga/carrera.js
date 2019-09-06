@@ -71,10 +71,9 @@ class liebre
 
 class valores
 {
-    constructor(longitud)
+    constructor()
     {
-        console.log("hi")
-        this._longitud = longitud;
+        this._longitud = Number(document.querySelector("#cantidad").value);
     }
     get longitud()
     {
@@ -100,7 +99,6 @@ class carrera extends valores
         let EG = new elecionGanador();
         var tortuga = 0;
         var liebre = 0;
-        console.log(this.longitud);
         while(tortuga < this._longitud && liebre < this._longitud )
         {
             tortuga = tortuga + T1.puntos(P1);
@@ -126,7 +124,6 @@ class elecionGanador extends valores
     }
     comparacion(tortuga, liebre)
     {   
-        console.log(this._longitud);
         let ganador = 0;
         if(tortuga >= this._longitud)
         {
@@ -154,6 +151,7 @@ document.querySelector("#calcular").addEventListener("click", ()=>{
         let L1 = new liebre();
         let T1 = new tortuga();
         let ganador =  C1.puntos(P1, T1, L1);
-        console.log("la carrera de " + Valor.longitud);
+        
         console.log(ganador);
+        console.log("La carrera fue de " + Valor.longitud);
     });
