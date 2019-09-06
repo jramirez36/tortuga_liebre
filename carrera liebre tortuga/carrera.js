@@ -1,6 +1,6 @@
 class probabilidad
 {
-    contructor()
+    constructor()
     {
     }
     calcular(ProbabilidadN)
@@ -10,7 +10,7 @@ class probabilidad
 }
 class tortuga
 {
-    contructor()
+    constructor()
     {
     }
     puntos(P1)
@@ -35,7 +35,7 @@ class tortuga
 }
 class liebre
 {
-    contructor()
+    constructor()
     {
     }
     puntos(P1)
@@ -68,50 +68,57 @@ class liebre
 }
 class carrera
 {
-    contructor(cantidad)
+    constructor(longitud)
     {
-        console.log("hola");
-        this._cantidad = cantidad;;
+        this._longitud = longitud;
     }
-    get cantidad()
+    get longitud()
     {
-        return this._cantidad;
+        return this._longitud;
     }
-    puntos(P1, T1, L1, cantidad)
+    puntos(P1, T1, L1)
     {
-        console.log(cantidad)
         let EG = new elecionGanador();
         var tortuga = 0;
         var liebre = 0;
-        while(tortuga < cantidad && liebre < cantidad )
+        console.log(this._longitud);
+        while(tortuga < this._longitud && liebre < this._longitud )
         {
             tortuga = tortuga + T1.puntos(P1);
             liebre = liebre + L1.puntos(P1);
         }
-        return EG.comparacion(tortuga, liebre, cantidad);
+        if(liebre < 0)
+        {
+            liebre = 0;
+        }
+        else if(tortuga < 0)
+        {
+            tortuga = 0;
+        }
+        return EG.comparacion(tortuga, liebre);
     }
 }
 class elecionGanador extends carrera
 {
-    constructor()
+    constructor(longitud)
     {
-        super(cantidad);
+        super(longitud);
     }
-    comparacion(tortuga, liebre, puntos)
+    comparacion(tortuga, liebre)
     {   
-        console.log(puntos)
+        console.log(this._longitud);
         let ganador = 0;
-        if(tortuga >= puntos)
+        if(tortuga >= this._longitud)
         {
             console.log("Perdio la liebre con: " + liebre + " pasos");
             ganador = "La tortuga gano con: " + tortuga + " pasos"
         }
-        else if(liebre >= puntos)
+        else if(liebre >= this._longitud)
         {
             console.log("Perdio la tortuga con: " + tortuga + " pasos");
             ganador = "La Liebre gano con: " + liebre + " pasos"
         }
-        if(tortuga >= puntos && liebre >= puntos )
+        if(tortuga >= this._longitud && liebre >= this._longitud )
         {
             ganador = "Empate";
         }
@@ -119,12 +126,11 @@ class elecionGanador extends carrera
     }
 }
 document.querySelector("#calcular").addEventListener("click", ()=>{
-        let cantidad = Number(document.querySelector("#cantidad").value);
-        console.log(cantidad);
-        let C1 = new carrera();
+        let longitud = Number(document.querySelector("#cantidad").value);
+        let C1 = new carrera(longitud);
         let P1 = new probabilidad();
         let L1 = new liebre();
         let T1 = new tortuga();
-        let ganador =  C1.puntos(P1, T1, L1, cantidad);
+        let ganador =  C1.puntos(P1, T1, L1);
         console.log(ganador);
     });
