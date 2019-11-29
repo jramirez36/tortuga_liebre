@@ -19,11 +19,11 @@ class tortuga
         let ProbabilidadN = 10;
         let punto = P1.calcular(ProbabilidadN);
         let total = 0;
-        if(1 === punto || 2 === punto)//20%
+        if(2 >= punto)//20%
         {
             total = -6;
         }
-        else if (3 === punto || 4 === punto || 5 === punto)//30%
+        else if (5 >= punto)//30%
         {
             total = +1;
         }
@@ -45,19 +45,19 @@ class liebre
         let ProbabilidadN = 20;
         let punto = P1.calcular(ProbabilidadN);
         let total = 0;
-        if(1 === punto || 2 === punto)//10%
+        if(2 >= punto)//10%
         {
             total = -12;
         }
-        else if (3 === punto || 4 === punto || 5 === punto)//15%
+        else if (5 >= punto)//15%
         {
             total = -2;
         }
-        else if (6 === punto || 7 === punto || 8 === punto || 9 === punto)//20%
+        else if (9 >= punto)//20%
         {
             total = +0;
         }
-        else if (10 === punto || 11 === punto || 12 === punto || 13 === punto)//20%
+        else if (13 >= punto)//20%
         {
             total = +9;
         }
@@ -71,20 +71,17 @@ class liebre
 
 class valores
 {
-    constructor()
+    constructor(longitud = 90)
     {
-        this._longitud = Number(document.querySelector("#cantidad").value);
+        this._longitud = longitud;
     }
     get longitud()
     {
-        return this._longitud;
-    }
-    revisor()
-    {
-        if(this._longitud < 0)
+        if(this._longitud <= 0)
         {
-            this._longitud = 1;
+            this._longitud = 10;
         }
+        return this._longitud;
     }
 }
 
@@ -94,24 +91,25 @@ class carrera extends valores
     {
         super(longitud);
     }
-    puntos(P1, T1, L1)
+    puntos(P1, T1, L1, longitud)
     {
-        let EG = new elecionGanador();
+        let EG = new elecionGanador(longitud);
         var tortuga = 0;
         var liebre = 0;
-        while(tortuga < this._longitud && liebre < this._longitud )
+        while(tortuga < this.longitud && liebre < this.longitud )
         {
             tortuga = tortuga + T1.puntos(P1);
             liebre = liebre + L1.puntos(P1);
+                if(liebre < 0)
+                {
+                    liebre = 0;
+                }
+                else if(tortuga < 0)
+                {
+                    tortuga = 0;
+                }
         }
-        if(liebre < 0)
-        {
-            liebre = 0;
-        }
-        else if(tortuga < 0)
-        {
-            tortuga = 0;
-        }
+        
         return EG.comparacion(tortuga, liebre);
     }
 }
@@ -125,18 +123,19 @@ class elecionGanador extends valores
     comparacion(tortuga, liebre)
     {   
         let ganador = 0;
-        if(tortuga >= this._longitud)
+        if(tortuga >= this.longitud)
         {
             console.log("Perdio la liebre con: " + liebre + " pasos");
             ganador = "La tortuga gano con: " + tortuga + " pasos"
         }
-        else if(liebre >= this._longitud)
+        else if(liebre >= this.longitud)
         {
             console.log("Perdio la tortuga con: " + tortuga + " pasos");
             ganador = "La Liebre gano con: " + liebre + " pasos"
         }
-        if(tortuga >= this._longitud && liebre >= this._longitud )
+        if(tortuga >= this.longitud && liebre >= this.longitud )
         {
+            console.log("Perdio la tortuga con: " + tortuga + " pasos");
             ganador = "Empate";
         }
         return ganador;
@@ -145,13 +144,10 @@ class elecionGanador extends valores
 
 document.querySelector("#calcular").addEventListener("click", ()=>{
         let longitud = Number(document.querySelector("#cantidad").value);
-        let Valor = new valores(longitud);
-        let C1 = new carrera();
+        let C1 = new carrera(longitud);
         let P1 = new probabilidad();
         let L1 = new liebre();
         let T1 = new tortuga();
-        let ganador =  C1.puntos(P1, T1, L1);
-        
+        let ganador =  C1.puntos(P1, T1, L1, longitud);
         console.log(ganador);
-        console.log("La carrera fue de " + Valor.longitud);
     });
